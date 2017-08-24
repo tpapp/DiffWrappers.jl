@@ -1,4 +1,4 @@
-using DiffWrapper
+using DiffWrappers
 using Base.Test
 
 struct QuadForm{TΣ}

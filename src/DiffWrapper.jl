@@ -1,4 +1,4 @@
-module DiffWrapper
+module DiffWrappers
 
 import DiffBase
 import ForwardDiff
