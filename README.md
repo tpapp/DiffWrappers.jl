@@ -5,8 +5,7 @@
 [![Coverage Status](https://coveralls.io/repos/tpapp/DiffWrapper.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/tpapp/DiffWrapper.jl?branch=master)
 [![codecov.io](http://codecov.io/github/tpapp/DiffWrapper.jl/coverage.svg?branch=master)](http://codecov.io/github/tpapp/DiffWrapper.jl?branch=master)
 
-Wrap functions so that when evaluated, they return `DiffResult`s with
-the requested derivatives.
+Wrap so that they return `DiffResult`s with the requested derivatives.
 
 Example:
 ```julia
