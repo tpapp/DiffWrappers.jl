@@ -13,7 +13,7 @@ end
         A = randn(N, N)
         q = QuadForm(Symmetric(A+A'))
         x = randn(N)
-        qq = ForwardGradientWrapper(q, x)
+        qq = ForwardGradientWrapper(q, rand() < 0.5 ? x : N)
         qqx = qq(x)
         @test q(x) == DiffBase.value(qqx)
         @test ForwardDiff.gradient(q, x) == DiffBase.gradient(qqx)
