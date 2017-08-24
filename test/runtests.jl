@@ -15,6 +15,7 @@ end
         x = randn(N)
         qq = ForwardGradientWrapper(q, rand() < 0.5 ? x : N)
         qqx = qq(x)
+        @inferred qq(x)
         @test q(x) == DiffBase.value(qqx)
         @test ForwardDiff.gradient(q, x) == DiffBase.gradient(qqx)
         @test length(qq) == N
