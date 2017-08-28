@@ -19,10 +19,10 @@ Create a wrapper for ``f: ℝⁿ→ℝ`` that returns the value `f(z)` and the g
 
 **Returned values share structure**, use `copy` when necessary.
 
-`chunk` can be supplied optionally, and is passed to `ForwardDiff.GradientConfig`.
+Additional arguments are passed to `ForwardDiff.GradientConfig`.
 """
-function ForwardGradientWrapper(f, x, chunk::ForwardDiff.Chunk = ForwardDiff.Chunk(x))
-    config = ForwardDiff.GradientConfig(f, x, chunk)
+function ForwardGradientWrapper(f, x, args...)
+    config = ForwardDiff.GradientConfig(f, x, args...)
     gr = DiffBase.GradientResult(x)
     ForwardGradientWrapper(f, config, gr)
 end

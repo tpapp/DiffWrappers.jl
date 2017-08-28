@@ -1,4 +1,4 @@
 julia 0.6
 DiffBase
-ForwardDiff 0.5
+ForwardDiff
 Parameters
