@@ -1,10 +1,15 @@
 module DiffWrappers
 
-import DiffBase
-import ForwardDiff
+import DiffResults: GradientResult
+import ForwardDiff: gradient!, GradientConfig
 using Parameters
+import Base: length
 
 export ForwardGradientWrapper
+
+######################################################################
+# forward
+######################################################################
 
 struct ForwardGradientWrapper{Tf, Tc, Tg}
     f::Tf
@@ -22,8 +27,8 @@ Create a wrapper for ``f: ℝⁿ→ℝ`` that returns the value `f(z)` and the g
 Additional arguments are passed to `ForwardDiff.GradientConfig`.
 """
 function ForwardGradientWrapper(f, x, args...)
-    config = ForwardDiff.GradientConfig(f, x, args...)
-    gr = DiffBase.GradientResult(x)
+    config = GradientConfig(f, x, args...)
+    gr = GradientResult(x)
     ForwardGradientWrapper(f, config, gr)
 end
 
@@ -36,10 +41,10 @@ ForwardGradientWrapper(f, n::Int, args...) = ForwardGradientWrapper(f, ones(n), 
 
 function (fgw::ForwardGradientWrapper)(x)
     @unpack f, config, gr = fgw
-    ForwardDiff.gradient!(gr, f, x, config)
+    gradient!(gr, f, x, config)
     gr
 end
 
-Base.length(fgw::ForwardGradientWrapper) = length(fgw.gr.derivs[1])
+length(fgw::ForwardGradientWrapper) = length(fgw.gr.derivs[1])
 
 end # module

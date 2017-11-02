@@ -1,5 +1,6 @@
 using DiffWrappers
 using Base.Test
+import DiffResults
 
 struct QuadForm{TΣ}
     Σ::TΣ
@@ -16,8 +17,8 @@ end
         qq = ForwardGradientWrapper(q, rand() < 0.5 ? x : N)
         qqx = qq(x)
         @inferred qq(x)
-        @test q(x) == DiffBase.value(qqx)
-        @test ForwardDiff.gradient(q, x) == DiffBase.gradient(qqx)
+        @test q(x) == DiffResults.value(qqx)
+        @test ForwardDiff.gradient(q, x) == DiffResults.gradient(qqx)
         @test length(qq) == N
     end
 end
