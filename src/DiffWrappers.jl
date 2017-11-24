@@ -1,6 +1,6 @@
 module DiffWrappers
 
-import DiffResults: GradientResult
+import DiffResults: GradientResult, DiffResult, ImmutableDiffResult
 import ForwardDiff: gradient!, GradientConfig
 using Parameters
 import Base: length
@@ -34,17 +34,13 @@ function ForwardGradientWrapper(f, x, args...)
     ForwardGradientWrapper(f, config, gr)
 end
 
-"""
-    ForwardGradientWrapper(f, n::Int, args...)
+ensure_unshared(gr::ImmutableDiffResult) = gr
 
-Same as `ForwardGradientWrapper(f, x, args...)`, but specify dimension directly with `n`.
-"""
-ForwardGradientWrapper(f, n::Int, args...) = ForwardGradientWrapper(f, ones(n), args...)
+ensure_unshared(gr::DiffResult) = deepcopy(gr)
 
 function (fgw::ForwardGradientWrapper)(x)
     @unpack f, config, gr = fgw
-    gradient!(gr, f, x, config)
-    deepcopy(gr)
+    ensure_unshared(gradient!(gr, f, x, config))
 end
 
 length(fgw::ForwardGradientWrapper) = length(fgw.gr.derivs[1])

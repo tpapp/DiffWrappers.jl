@@ -1,6 +1,7 @@
 using DiffWrappers
 using Base.Test
 import DiffResults
+using StaticArrays
 
 struct QuadForm{TΣ}
     Σ::TΣ
@@ -11,11 +12,13 @@ end
 @testset "quadratic form gradient" begin
     for _ in 1:100
         N = rand(3:10)
+        static = rand() < 0.5
         A = randn(N, N)
-        q = QuadForm(Symmetric(A+A'))
-        x = randn(N)
-        qq = ForwardGradientWrapper(q, rand() < 0.5 ? x : N)
+        q = QuadForm(Symmetric(static ? SMatrix{N, N}(A + A') : (A + A')))
+        x = static ? SVector{N}(randn(N)) : randn(N)
+        qq = ForwardGradientWrapper(q, x)
         qqx = qq(x)
+        qq(randn(N))           # another call to test that structure is unshared
         @inferred qq(x)
         @test q(x) == DiffResults.value(qqx)
         @test ForwardDiff.gradient(q, x) == DiffResults.gradient(qqx)
