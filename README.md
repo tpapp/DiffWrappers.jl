@@ -8,21 +8,31 @@
 Wrap so that they return `DiffResult`s with the requested derivatives.
 
 Example:
-```julia
-using DiffWrappers
-using DiffResults
-f(x) = sum(x.*linspace(0,1,length(x)))
-g = ForwardGradientWrapper(f, 4) # will use length 4 vectors
-length(g)                        # 4
-x = ones(4)
-gx = g(x)
-DiffResults.value(gx)               # 2.0
-DiffResults.gradient(gx)            # [0, 1/3, 2/6, 1]
-```
 
-Note: returned `DiffResult`s may **share structure**, eg
+<!--- pasted from output of test/example.jl -->
 ```julia
-gx2 = g(2*ones(4))
-gx === gx2                       # true !
+julia> using DiffWrappers
+
+julia> using DiffResults
+
+julia> f(x) = sum(x .* linspace(0, 1, length(x)));
+
+julia> g = ForwardGradientWrapper(f, 4); # will use length 4 vectors
+
+julia> length(g)
+4
+
+julia> x = ones(4);
+
+julia> gx = g(x);
+
+julia> DiffResults.value(gx)
+2.0
+
+julia> DiffResults.gradient(gx)
+4-element Array{Float64,1}:
+ 0.0     
+ 0.333333
+ 0.666667
+ 1.0     
 ```
-Use `copy` to avoid this.
