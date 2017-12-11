@@ -1,9 +1,10 @@
 __precompile__()
 module DiffWrappers
 
-import DiffResults: GradientResult, DiffResult, ImmutableDiffResult
-import ForwardDiff: gradient!, GradientConfig
-using Parameters
+using DiffResults: GradientResult, DiffResult, ImmutableDiffResult
+using DocStringExtensions: SIGNATURES
+using ForwardDiff: gradient!, GradientConfig
+using Parameters: @unpack
 import Base: length
 
 export ForwardGradientWrapper
@@ -18,10 +19,10 @@ struct ForwardGradientWrapper{Tf, Tc, Tg}
 end
 
 """
-    ForwardGradientWrapper(f, x, [args...])
+    $SIGNATURES
 
 Create a wrapper for ``f: ℝⁿ→ℝ`` that returns the value `f(z)` and the gradient
-`∇f(z)` when called with vector `z`, using `ForwardDiff`. `x` is used only for
+``∇f(z)`` when called with vector `z`, using `ForwardDiff`. `x` is used only for
 ascertaining the size for the buffer, its value is ignored.
 
 Additional arguments are passed to `ForwardDiff.GradientConfig`.
@@ -34,13 +35,20 @@ function ForwardGradientWrapper(f, x, args...)
     ForwardGradientWrapper(f, config, gr)
 end
 
-ensure_unshared(gr::ImmutableDiffResult) = gr
+"""
+    $SIGNATURES
 
-ensure_unshared(gr::DiffResult) = deepcopy(gr)
+Helper function to copy shared structure if necessary.
+"""
+_ensure_unshared(gr::ImmutableDiffResult) = gr
+
+# FIXME: revisit once https://github.com/JuliaDiff/DiffResults.jl/issues/4
+# is fixed
+_ensure_unshared(gr::DiffResult) = deepcopy(gr)
 
 function (fgw::ForwardGradientWrapper)(x)
     @unpack f, config, gr = fgw
-    ensure_unshared(gradient!(gr, f, x, config))
+    _ensure_unshared(gradient!(gr, f, x, config))
 end
 
 length(fgw::ForwardGradientWrapper) = length(fgw.gr.derivs[1])
