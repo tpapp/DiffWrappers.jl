@@ -1,3 +1,4 @@
+__precompile__()
 module DiffWrappers
 
 import DiffResults: GradientResult, DiffResult, ImmutableDiffResult
@@ -7,9 +8,8 @@ import Base: length
 
 export ForwardGradientWrapper
 
-######################################################################
+
 # forward
-######################################################################
 
 struct ForwardGradientWrapper{Tf, Tc, Tg}
     f::Tf
