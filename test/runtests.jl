@@ -1,6 +1,9 @@
 using DiffWrappers
 using Base.Test
+
+using ContinuousTransformations
 import DiffResults
+import ForwardDiff
 using StaticArrays
 
 struct QuadForm{TΣ}
@@ -24,4 +27,15 @@ end
         @test ForwardDiff.gradient(q, x) == DiffResults.gradient(qqx)
         @test length(qq) == N
     end
+end
+
+@testset "TransformLogLikelihood constructor" begin
+    ℓ(x) = x[1] + log(x[2])
+    t = TransformationTuple((IDENTITY, bridge(ℝ, ℝ⁺)))
+    ℓt = TransformLogLikelihood(ℓ, t)
+    q = ForwardGradientWrapper(ℓt)
+    x = randn(2)
+    qx = q(x)
+    @test DiffResults.value(qx) == ℓt(x)
+    @test DiffResults.gradient(qx) == ForwardDiff.gradient(ℓt, x)
 end

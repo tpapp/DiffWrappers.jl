@@ -1,9 +1,10 @@
 __precompile__()
 module DiffWrappers
 
+using ContinuousTransformations: TransformLogLikelihood
 using DiffResults: GradientResult, DiffResult, ImmutableDiffResult
 using DocStringExtensions: SIGNATURES
-using ForwardDiff: gradient!, GradientConfig
+using ForwardDiff: gradient!, GradientConfig, Chunk
 using Parameters: @unpack
 import Base: length
 
@@ -29,11 +30,14 @@ Additional arguments are passed to `ForwardDiff.GradientConfig`.
 
 Values returned by the wrapper don't share structure.
 """
-function ForwardGradientWrapper(f, x, args...)
-    config = GradientConfig(f, x, args...)
+function ForwardGradientWrapper(f, x; chunk = Chunk(x))
+    config = GradientConfig(f, x, chunk)
     gr = GradientResult(x)
     ForwardGradientWrapper(f, config, gr)
 end
+
+ForwardGradientWrapper(t::TransformLogLikelihood; args...) =
+    ForwardGradientWrapper(t, zeros(length(t)); args...)
 
 """
     $SIGNATURES
