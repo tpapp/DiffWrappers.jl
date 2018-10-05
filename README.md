@@ -4,7 +4,8 @@
 
 # DiffWrappers
 
-[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
+![Lifecycle](https://img.shields.io/badge/lifecycle-archived-red.svg)
+[![Project Status: Unsupported – The project has reached a stable, usable state but the author(s) have ceased all work on it. A new maintainer may be desired.](https://www.repostatus.org/badges/latest/unsupported.svg)](https://www.repostatus.org/#unsupported)
 [![Build Status](https://travis-ci.org/tpapp/DiffWrappers.jl.svg?branch=master)](https://travis-ci.org/tpapp/DiffWrappers.jl)
 [![Coverage Status](https://coveralls.io/repos/tpapp/DiffWrappers.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/tpapp/DiffWrappers.jl?branch=master)
 [![codecov.io](http://codecov.io/github/tpapp/DiffWrappers.jl/coverage.svg?branch=master)](http://codecov.io/github/tpapp/DiffWrappers.jl?branch=master)
