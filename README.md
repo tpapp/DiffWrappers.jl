@@ -1,3 +1,7 @@
+# Deprecation notice
+
+**IMPORTANT**: this package is now abandoned, please use [LogDensityProblems.jl](https://github.com/tpapp/LogDensityProblems.jl) instead.
+
 # DiffWrappers
 
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
@@ -31,8 +35,8 @@ julia> DiffResults.value(gx)
 
 julia> DiffResults.gradient(gx)
 4-element Array{Float64,1}:
- 0.0     
+ 0.0
  0.333333
  0.666667
- 1.0     
+ 1.0
 ```
